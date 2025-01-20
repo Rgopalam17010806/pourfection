@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block header %}
+  <!-- Inline CSS for Carousel Styling -->
+  <style>
+    /* Remove margins and paddings from body and html */
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Remove margin below the navbar */
+    .navbar {
+      margin-bottom: 0;
+      padding: 0;
+    }
+
+    /* Set carousel to be responsive with a smaller height */
+    .carousel {
+      height: 60vh; /* 60% of the viewport height */
+      margin-top: 0;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%; /* Ensures the images fill the carousel's height */
+      object-fit: cover; /* Ensures the image doesn't get stretched or squished */
+    }
+
+    /* Styling the captions to stand out */
+    .carousel-caption {
+      bottom: 20px;
+      text-align: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Add some padding below the carousel for additional content */
+    .carousel-footer {
+      padding: 20px;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+
+    .carousel-footer p {
+      color: #555;
+      font-size: 1.2rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Full-Width Image Carousel -->
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{{ url_for('static', filename='img/image1.jpg') }}" class="d-block w-100" alt="Image 1">
+        <div class="carousel-caption">
+          <h1>Welcome to Pourfection</h1>
+          <p>Your perfect cup of coffee awaits</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{{ url_for('static', filename='img/image2.jpg') }}" class="d-block w-100" alt="Image 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{{ url_for('static', filename='img/image3.jpg') }}" class="d-block w-100" alt="Image 3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer or Additional Information Below the Carousel -->
+  <div class="carousel-footer">
+    <p>Explore our menu, book a table, or learn more about us.</p>
+  </div>
+{% endblock %}
+
+<!-- Link to the JavaScript file -->
+<script src="{{ url_for('static', filename='carousel.js') }}"></script>

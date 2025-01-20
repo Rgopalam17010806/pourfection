@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} Coffee machine {% endblock %}
+{% block header %} Coffee machine {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container py-5">
+       <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for r in recipes %}
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ r.name }}</h5>
+                        <p class="card-text">{{ r.description }}</p>
+                        <a href="/prepare/{{ r.id }}" class="btn btn-primary">Select</a>
+                    </div>
+                </div>
+            </div>
+           {% endfor %}
+       </div>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -13,33 +13,39 @@
 <script>
     const stepsContainer = document.getElementById("steps");
     const steps = {{ recipeview.steps | tojson }};
-        function typeText(element, text, callback) {
-            let index = 0;
-            function typeChar() {
-                if (index < text.length) {
-                    element.innerHTML += text.charAt(index);
-                    index++;
-                    setTimeout(typeChar, 50); // Adjust typing speed here
-                } else if (callback) {
-                    callback();
-                }
-            }
-            typeChar();
-        }
-
-        function displaySteps(index) {
-            if (index < steps.length) {
-                const stepElement = document.createElement("div");
-                stepsContainer.appendChild(stepElement);
-
-                typeText(stepElement, steps[index], () => {
-                    displaySteps(index + 1);
-                });
+    
+    function typeText(element, text, callback) {
+        let index = 0;
+        function typeChar() {
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeChar, 50); // Adjust typing speed here
+            } else if (callback) {
+                callback();
             }
         }
+        typeChar();
+    }
 
-        // Start displaying steps with typing effect
-        displaySteps(0);
+    function displaySteps(index) {
+        if (index < steps.length) {
+            const stepElement = document.createElement("div");
+            stepsContainer.appendChild(stepElement);
+
+            typeText(stepElement, steps[index], () => {
+                displaySteps(index + 1);
+            });
+        } else {
+            // After the last step is printed, print the "Enjoy your drink!" message
+            const messageElement = document.createElement("div");
+            stepsContainer.appendChild(messageElement);
+            typeText(messageElement, "Enjoy your drink!", null);  // No callback after the message
+        }
+    }
+
+    // Start displaying steps with typing effect
+    displaySteps(0);
 </script>
 {% endif %}
 {% endblock %}

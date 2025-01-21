@@ -37,10 +37,12 @@
                 displaySteps(index + 1);
             });
         } else {
+
             // After the last step is printed, print the "Enjoy your drink!" message
             const messageElement = document.createElement("div");
             stepsContainer.appendChild(messageElement);
-            typeText(messageElement, "Enjoy your drink!", null);  // No callback after the message
+            typeText(messageElement, "Enjoy your drink!", null);  
+            // No callback after the message
         }
     }
 

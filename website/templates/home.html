@@ -41,7 +41,7 @@
   }
 
   .book-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: white; /* Darker shade on hover */
     transform: translateY(-3px); /* Slightly lifts the button on hover */
   }
 
@@ -94,7 +94,11 @@
     </button>
 
     <!-- Buttons for actions -->
-    <a href="" class="book-button">Login to order</a>
+  {% if user.is_authenticated %}
+    <a href="{{ url_for('views.machine') }}" class="book-button">Order Now</a>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}" class="book-button">Login to Order</a>
+  {% endif %}
 
   </div>
 

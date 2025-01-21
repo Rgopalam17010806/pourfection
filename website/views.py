@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, request, url_for
 from flask_login import login_required, current_user
 
 from website.models import Recipe, RecipeStep
@@ -20,6 +20,7 @@ def machine():
 @views.route('/prepare/<string:recipe_id>', methods=['GET'])
 @login_required
 def prepare(recipe_id):
+    size = request.args.get('size')
     recipe = Recipe.query.filter_by(id=recipe_id).one_or_none()
     if recipe:
         recipe_steps = (RecipeStep.query
@@ -32,7 +33,7 @@ def prepare(recipe_id):
             description=recipe.description,
             steps=[rs.step.description for rs in recipe_steps]
         )
-        return render_template("prepare.html", user=current_user, recipeview=recipe_view_model)
+        return render_template("prepare.html", user=current_user, recipeview=recipe_view_model, size=size)
     else:
         flash('Recipe does not exist.', category='error')
         return redirect(url_for('views.machine'))

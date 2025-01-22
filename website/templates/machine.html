@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ r.name }}</h5>
                     <p class="card-text">{{ r.description }}</p>
-                    <!-- Updated button to trigger modal -->
+                    <!-- button to trigger the modal -->
                     <button class="btn custom-select-button select-recipe" data-bs-toggle="modal" data-bs-target="#sizeModal" data-recipe-id="{{ r.id }}">
                         Select
                     </button>
@@ -37,7 +37,7 @@
                     <div class="d-flex justify-content-around align-items-center">
                         <!-- Small size -->
                         <div class="text-center">
-                            <img src="{{ url_for('static', filename='img/small.png') }}" alt="Small Size" class="img-fluid" style="width: 50px; height: auto;">
+                            <img src="{{ url_for('static', filename='img/small.png') }}" alt="Small Size" class="img-fluid icon-small">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="size" id="sizeSmall" value="small" required>
                                 <label class="form-check-label" for="sizeSmall">Small</label>
@@ -45,7 +45,7 @@
                         </div>
                         <!-- Medium size -->
                         <div class="text-center">
-                            <img src="{{ url_for('static', filename='img/medium.png') }}" alt="Medium Size" class="img-fluid" style="width: 50px; height: auto;">
+                            <img src="{{ url_for('static', filename='img/medium.png') }}" alt="Medium Size" class="img-fluid icon-medium">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="size" id="sizeMedium" value="medium" required>
                                 <label class="form-check-label" for="sizeMedium">Medium</label>
@@ -53,7 +53,7 @@
                         </div>
                         <!-- Large size -->
                         <div class="text-center">
-                            <img src="{{ url_for('static', filename='img/large.png') }}" alt="Large Size" class="img-fluid" style="width: 50px; height: auto;">
+                            <img src="{{ url_for('static', filename='img/large.png') }}" alt="Large Size" class="img-fluid icon-large">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="size" id="sizeLarge" value="large" required>
                                 <label class="form-check-label" for="sizeLarge">Large</label>
@@ -87,6 +87,22 @@
     /* Change color on hover */
     .custom-select-button:hover {
         background-color: white; /* Darker shade on hover */
+    }
+
+    /* Ensuring different icon sizes */
+    .icon-small {
+        width: 40px; /* Small size */
+        height: auto;
+    }
+
+    .icon-medium {
+        width: 60px; /* Medium size */
+        height: auto;
+    }
+
+    .icon-large {
+        width: 80px; /* Large size */
+        height: auto;
     }
 </style>
 

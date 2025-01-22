@@ -1,22 +1,27 @@
+from datetime import datetime
 from flask import Blueprint, render_template, flash, redirect, request, url_for
 from flask_login import login_required, current_user
 
-from website.models import Recipe, RecipeStep
+from website.models import Orders, Recipe, RecipeStep
 from website.viewmodels import RecipeViewModel
+from website import db
 
 views = Blueprint('views', __name__)
 
 
+#route for the home page
 @views.route('/')
 def home():
     return render_template("home.html", user=current_user)
 
+#route for the machine page
 @views.route('/machine')
 @login_required
 def machine():
     recipes = Recipe.query.all()
     return render_template("machine.html", user=current_user, recipes=recipes)
 
+# route for preparing the user's drink
 @views.route('/prepare/<string:recipe_id>', methods=['GET'])
 @login_required
 def prepare(recipe_id):
@@ -36,4 +41,20 @@ def prepare(recipe_id):
         return render_template("prepare.html", user=current_user, recipeview=recipe_view_model, size=size)
     else:
         flash('Recipe does not exist.', category='error')
+        return redirect(url_for('views.machine'))
+    
+# route for saving the user's order. 
+@views.route('/submit_order', methods=['POST'])
+@login_required
+def submit_order():
+    recipe_id = request.form.get('recipe_id')
+    size = request.form.get('size')
+    if recipe_id and size:
+        new_order = Orders(user_id=current_user.id, recipe_id=recipe_id, size=size, order_date=datetime.utcnow())
+        db.session.add(new_order)
+        db.session.commit()
+        flash('Order placed successfully!', category='success')
+        return redirect(url_for('views.prepare', recipe_id=recipe_id, size=size))
+    else:
+        flash('Failed to place order. Please try again.', category='error')
         return redirect(url_for('views.machine'))

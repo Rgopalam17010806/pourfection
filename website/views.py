@@ -21,13 +21,18 @@ def machine():
     recipes = Recipe.query.all()
     return render_template("machine.html", user=current_user, recipes=recipes)
 
-# route for preparing the user's drink
-@views.route('/prepare/<string:recipe_id>', methods=['GET'])
+    
+# route for saving the user's order. 
+@views.route('/submit_order', methods=['POST'])
 @login_required
-def prepare(recipe_id):
-    size = request.args.get('size')
+def submit_order():
+    recipe_id = request.form.get('recipe_id')
+    size = request.form.get('size')
     recipe = Recipe.query.filter_by(id=recipe_id).one_or_none()
-    if recipe:
+    if recipe and size:
+        new_order = Orders(user_id=current_user.id, recipe_id=recipe_id, size=size, order_date=datetime.utcnow())
+        db.session.add(new_order)
+        db.session.commit()
         recipe_steps = (RecipeStep.query
                         .filter_by(recipe_id=recipe.id)
                         .order_by(RecipeStep.order.asc())
@@ -39,22 +44,6 @@ def prepare(recipe_id):
             steps=[rs.step.description for rs in recipe_steps]
         )
         return render_template("prepare.html", user=current_user, recipeview=recipe_view_model, size=size)
-    else:
-        flash('Recipe does not exist.', category='error')
-        return redirect(url_for('views.machine'))
-    
-# route for saving the user's order. 
-@views.route('/submit_order', methods=['POST'])
-@login_required
-def submit_order():
-    recipe_id = request.form.get('recipe_id')
-    size = request.form.get('size')
-    if recipe_id and size:
-        new_order = Orders(user_id=current_user.id, recipe_id=recipe_id, size=size, order_date=datetime.utcnow())
-        db.session.add(new_order)
-        db.session.commit()
-        flash('Order placed successfully!', category='success')
-        return redirect(url_for('views.prepare', recipe_id=recipe_id, size=size))
     else:
         flash('Failed to place order. Please try again.', category='error')
         return redirect(url_for('views.machine'))
